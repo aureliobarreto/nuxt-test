@@ -1,6 +1,6 @@
 <template>
-  <v-app dark>
-    <v-navigation-drawer
+  <v-app>
+    <!-- <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
       :clipped="clipped"
@@ -23,8 +23,8 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
-    <v-app-bar
+    </v-navigation-drawer> -->
+    <!-- <v-app-bar
       :clipped-left="clipped"
       fixed
       app
@@ -78,7 +78,8 @@
           <v-list-item-title>Switch drawer (click me)</v-list-item-title>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
+    <index/>
     <v-footer
       :absolute="!fixed"
       app
@@ -89,7 +90,9 @@
 </template>
 
 <script>
+import index from '../pages/index.vue'
 export default {
+  components: { index },
   name: 'DefaultLayout',
   data () {
     return {
