@@ -1,158 +1,74 @@
 <template>
-  <v-container>
+  <div>
     <v-toolbar color="primary">
       <v-toolbar-title class="white--text">fullstack-python-vue-project</v-toolbar-title>
+      <v-spacer/>
+      <v-btn text flat class="white--text"> Sobre nós </v-btn>
     </v-toolbar>    
     <v-card>
 
       <v-card-title>
         <v-spacer/>
-        <v-text-field append-icon="mdi-magnify"></v-text-field>
-      </v-card-title>
-
-  
+        <v-text-field v-model="search" placeholder="Buscar notícias" append-icon="mdi-magnify"></v-text-field>
+      </v-card-title>  
           <v-row>
-            <v-col lg="3" md="4" xs="12" v-for="(item,i) in noticias.data" :key="i">
+            <template v-if="loading">
+            <v-col  lg="4" md="6" xs="12" v-for="j in 6" :key="j">
+                <v-skeleton-loader                   
+                  class="mx-auto"
+                  max-width="300"
+                  type="card, text, text"
+                ></v-skeleton-loader>              
+            </v-col>
+          </template>
+            
+          <template v-if="!loading">
+            <v-col lg="4" md="6" xs="12" v-for="(item,i) in noticiasFiltradas" :key="i">
               <v-card
                 :loading="loading"
                 class="mx-auto my-12"
                 max-width="374"
-                height="450"
+                height="500"
               >
-            <!-- <template>
-              <v-progress-linear
-                color="deep-purple"
-                height="10"
-                indeterminate
-              ></v-progress-linear>
-            </template> -->
-
-                <v-img
+                <v-img v-if="item.img != ''"
                   height="250"
-                  :src="item.imageUrl"
-                ></v-img>
+                  :src="item.img"
+                >
+              </v-img>
 
-                <v-card-title>{{item.title}}</v-card-title>
+                <v-img v-else height="250" src="https://www.uefs.br/modules/galeria/uploads/2459/destaque_1653999195Portico.jpg">
+                </v-img>
+                <v-card flat height="100px" style="overflow-y: auto;">
+                  <v-card-title height="50px"> {{ item.title }}</v-card-title> 
+                </v-card>             
+                <v-card flat height="100px" style="overflow-y: auto;">
+                  <v-card-text > {{ limitText(item.description) }} </v-card-text> 
+                </v-card>     
+              
 
-                <v-card-text>
-                  <v-row
-                    align="center"
-                    class="mx-0"
-                  >
-                    <!-- <v-rating
-                      :value="4.5"
-                      color="amber"
-                      dense
-                      half-increments
-                      readonly
-                      size="14"
-                    ></v-rating> -->
-
-                    
-                  </v-row>
-                  <div>{{item.description}}</div>
-                </v-card-text>
-
-                <v-divider class="mx-4"></v-divider>   
+                <v-divider class="mx-4 align-end"></v-divider>   
 
                 <v-card-actions>
                   <v-spacer></v-spacer>
 
                   <v-btn icon color="deep-purple lighten-2">
                     <v-icon>mdi-heart</v-icon>
-                  </v-btn>
-
-                  <v-btn icon color="deep-purple lighten-2">
-                    <v-icon>mdi-bookmark</v-icon>
-                  </v-btn>
+                  </v-btn>                  
 
                   <v-btn icon color="deep-purple lighten-2">
                     <v-icon>mdi-share-variant</v-icon>
-                  </v-btn>  
+                  </v-btn>
+                  
+                  <v-btn :href="item.uri" target="_blank"  icon color="deep-purple lighten-2">
+                    <v-icon>mdi-open-in-new</v-icon>
+                  </v-btn>
                 </v-card-actions>
               </v-card>
             </v-col>
+            </template>
           </v-row>
     </v-card>
-  </v-container>
-
-
-  <!-- <v-row justify="center" align="center">
-    <v-col cols="12" sm="8" md="6">
-      <v-card class="logo py-4 d-flex justify-center">
-        <NuxtLogo />
-        <VuetifyLogo />
-        
-      </v-card>
-      <v-card>
-        <v-card-title class="headline">
-          Welcome to the Vuetify + Nuxt.js template
-        </v-card-title>
-        <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>
-            For more information on Vuetify, check out the <a
-              href="https://vuetifyjs.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation
-            </a>.
-          </p>
-          <p>
-            If you have questions, please join the official <a
-              href="https://chat.vuetifyjs.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="chat"
-            >
-              discord
-            </a>.
-          </p>
-          <p>
-            Find a bug? Report it on the github <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="contribute"
-            >
-              issue board
-            </a>.
-          </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
-          <div class="text-xs-right">
-            <em><small>&mdash; John Leider</small></em>
-          </div>
-          <hr class="my-3">
-          <a
-            href="https://nuxtjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt Documentation
-          </a>
-          <br>
-          <a
-            href="https://github.com/nuxt/nuxt.js"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Nuxt GitHub
-          </a>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            nuxt
-            to="/inspire"
-          >
-            Continue
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row> -->
+  </div>
 </template>
 
 <script>
@@ -161,7 +77,9 @@ export default {
   name: 'IndexPage',
   data () {
     return {
-      noticias: []
+      loading: false,
+      noticias: [],
+      search: ''
     }
   },
   methods: {
@@ -171,12 +89,12 @@ export default {
         if (resp.status == 200){
           console.log('--> ', resp.data)
           this.noticias = resp.data
-          
         }
       }).finally(() => {
           this.loading = false
       })
     },
+   
     // async load2 () {
     //   var aux = await this.$axios.$get('news', { progress: false })
     //   console.log('AUX: ', aux)
@@ -185,6 +103,31 @@ export default {
   mounted () {
     this.carregarNoticias()
     //this.load2()
+  },
+  computed: {
+    limitText() {
+    return function(item) {
+      if (item) {
+        if (item.length > 40) {
+          return item.substring(0, 40) + "...";
+        } else {
+          return item;
+        }
+      } else {
+        return "";
+      }
+    };
+    },
+    noticiasFiltradas () {
+      if (!this.search) {
+        return this.noticias.data
+      }
+      const busca = this.search.toLowerCase()
+      return this.noticias.data.filter(item => {
+        const nome = item.title.toLowerCase()
+        return nome.includes(busca)
+      })
+    }
   }
 }
 </script>
